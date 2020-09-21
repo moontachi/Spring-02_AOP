@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
+
+	<bean id = "myorder" class="com.spring.ex2.OrderImpl"/>
+	<bean id = "li" class="com.spring.ex2.Login"/>
+	<bean id = "lo" class="com.spring.ex2.Logout"/>
+	<bean id = "d" class="com.spring.ex2.Dao"/>
+		<bean id = "h" class="com.spring.ex2.Hello"/>
+	<bean id = "myboard" class="com.spring.ex2.BoradImpl"/>
+	
+	<aop:config>
+		<aop:aspect ref="li">
+			<aop:before method="login" pointcut="execution(* com.spring.ex2.OrderImpl.*())"/>
+		</aop:aspect>
+	</aop:config>
+	
+	<aop:config>
+		<aop:aspect ref="lo" order="1">
+			<aop:after method="logout" pointcut="execution(* com.spring.ex2.OrderImpl.*())"/>
+		</aop:aspect>
+	</aop:config>
+	
+	<aop:config>
+		<aop:aspect ref="d" order="2">
+			<aop:after method="dao" pointcut="execution(* com.spring.ex2.OrderImpl.*())"/>
+		</aop:aspect>
+	</aop:config>
+	
+	
+	
+	<aop:config>
+		<aop:aspect ref="li" order="1">
+			<aop:before method="login" pointcut="execution(* com.spring.ex2.BoradImpl.*())"/>
+		</aop:aspect>
+	</aop:config>
+	<aop:config>
+		<aop:aspect ref="h" order="2">
+			<aop:before method="hello" pointcut="execution(* com.spring.ex2.BoradImpl.*())"/>
+		</aop:aspect>
+	</aop:config>
+	<aop:config>
+		<aop:aspect ref="d" order="3">
+			<aop:before method="dao" pointcut="execution(* com.spring.ex2.BoradImpl.*())"/>
+		</aop:aspect>
+	</aop:config>
+	<aop:config>
+		<aop:aspect ref="lo" order="1">
+			<aop:after method="logout" pointcut="execution(* com.spring.ex2.BoradImpl.*())"/>
+		</aop:aspect>
+	</aop:config>
+	
+</beans>
+<!--  
+	before : order 숫자가 작은게 먼저 시작.
+	after : order 숫자가 큰게 먼저 시작.
+	aop:config : aop 설정을 하겠다.
+	aop:aspect : 공통사항
+	pointcut : 핵심사항
+	advice : before, after
+	joinpoint : aspect 적용 가능한 지점들의 모음
+-->
